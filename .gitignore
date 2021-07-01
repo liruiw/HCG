@@ -1,0 +1,14 @@
+*.pyc
+.idea/*
+*.so
+*egg-info*
+*.avi
+*.pdf
+*.xyz
+*.zip
+*.obj
+output
+experiments/runs
+data
+output_misc
+OMG/data
