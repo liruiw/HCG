@@ -1,0 +1,18 @@
+RL_MEMORY_SIZE: 3000000
+RL_SAVE_DATA_NAME: 'data_5w_clutter.npz'
+OFFLINE_RL_MEMORY_SIZE: 50000
+RL_MEMORY_SIZE: 50000
+OFFLINE_BATCH_SIZE: 51
+RL_TRAIN:
+  RL: False
+  policy_aux: True
+  batch_size: 64
+  updates_per_step: 50
+  train_traj_feature: True
+  full_traj_embedding: True
+  balanced_batch_length: True
+  batch_sequence_size: 2
+  batch_sequence_ratio: 9
+  use_time: True
+  feature_input_dim: 1024
+  max_epoch: 120000

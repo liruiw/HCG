@@ -1,0 +1,38 @@
+RL_SAVE_DATA_NAME: 'data_5w_clutter.npz'  
+OFFLINE_RL_MEMORY_SIZE: 150000
+RL_MEMORY_SIZE: 150000
+ONPOLICY_MEMORY_SIZE: 150000
+OFFLINE_BATCH_SIZE: 48
+RL_TRAIN:
+  RL: True
+  dqn: True  
+  ONPOLICY_BUFFER_NAME: 'data_5w_clutter_online.npz'
+  explore_cap: 1.0
+  dart: False
+  explore_ratio_list: [1.0]
+  epsilon_greedy_list: [0.7]
+  gaddpg_ratio_list: [0.5, 0.7, 1.0]
+  mix_value_ratio_list: [0.5]
+  onpolicy: True
+  online_buffer_ratio: 1.
+  num_remotes: 17
+  updates_per_step: 50
+  index_file: 'ycb_large.json'
+  full_traj_embedding: False
+  balanced_batch_length: False
+  max_epoch: 170000
+  use_dataset_policy_feat: True
+  use_offline_latent: True
+  multi_traj_sample: True
+  critic_mpc: True
+  critic_gaddpg: True
+  ignore_traj: True
+  ignore_traj_sampler: True
+  train_traj_sampler: True
+  reinit_feat_opt: True
+  critic_tanh: True
+  critic_aux: False
+  action_noise: 0.01
+  gaddpg_scale: 0.1
+  test_log_sigma_clip: 1.
+ 

@@ -1,0 +1,47 @@
+
+traj_feature_extractor:
+    class: TrajEmbeddingNet
+    net_kwargs:
+        input_dim: 40
+        extra_latent: 1
+        large_feature: True
+        num_actions: 6
+    opt: Adam
+    opt_kwargs:
+        lr: 1.0e-3
+    scheduler: MultiStepLR
+    scheduler_kwargs:
+        milestones: [20000, 40000, 60000, 80000, 100000]
+        gamma: 0.3
+
+traj_feature_sampler:
+    class: TrajSamplerNet
+    net_kwargs:
+        input_dim: 40
+        extra_latent: 1
+        large_feature: True
+        num_actions: 6
+    opt: Adam
+    opt_kwargs:
+        lr: 3.0e-4
+    scheduler: MultiStepLR
+    scheduler_kwargs:
+        milestones: [20000, 40000, 60000, 80000, 100000]
+        gamma: 0.3
+
+
+state_feature_extractor:
+    class: PointNetTrajFeature
+    net_kwargs:
+        input_dim: 40
+        extra_latent: 1
+        large_feature: True
+    opt: Adam
+    opt_kwargs:
+        lr: 1.0e-3
+    scheduler: MultiStepLR
+    scheduler_kwargs:
+        milestones: [20000, 40000, 60000, 80000, 100000]
+        gamma: 0.3
+
+

@@ -1,0 +1,31 @@
+RL_SAVE_DATA_NAME: 'data_5w_clutter.npz'  
+OFFLINE_RL_MEMORY_SIZE: 50000
+RL_MEMORY_SIZE: 50000
+ONPOLICY_MEMORY_SIZE: 50000
+OFFLINE_BATCH_SIZE: 32
+RL_TRAIN:
+  RL: True
+  dqn: True  
+  ONPOLICY_BUFFER_NAME: 'data_5w_clutter_online.npz'
+  explore_cap: 0.0
+  dart: False
+  onpolicy: True
+  online_buffer_ratio: 1.
+  num_remotes: 8
+  updates_per_step: 10
+  full_traj_embedding: False
+  balanced_batch_length: False
+  max_epoch: 180000
+  use_dataset_policy_feat: True
+  use_offline_latent: True
+  multi_traj_sample: True
+  critic_mpc: True
+  critic_gaddpg: True
+  ignore_traj: True
+  ignore_traj_sampler: True
+  train_traj_sampler: True
+  sa_channel_concat: False
+  reinit_feat_opt: True
+  critic_tanh: True
+  critic_aux: False
+ 
