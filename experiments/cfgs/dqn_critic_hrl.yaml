@@ -32,7 +32,6 @@ RL_TRAIN:
   reinit_feat_opt: True
   critic_tanh: True
   critic_aux: False
-  action_noise: 0.01
   gaddpg_scale: 0.1
   test_log_sigma_clip: 1.
  

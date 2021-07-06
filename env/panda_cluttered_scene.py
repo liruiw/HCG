@@ -160,13 +160,11 @@ class PandaYCBEnv():
         self.placed_object_target_idx = 0
         self.target_idx = 0
         self.objects_loaded = False
-        self.parallel = False
         self.curr_acc_points = np.zeros([4, 0]) if not self._use_normal else np.zeros([7, 0])
         self.connected = False
         self.action_dim = 6
         self.hand_finger_points = hand_finger_point
         self.action_space =  PandaTaskSpace6D()
-        self.arm_collision_point = get_collision_points()
 
     def connect(self):
         """
@@ -307,7 +305,6 @@ class PandaYCBEnv():
         """
         object_pose = self._get_target_relative_pose('ef')
         ef_pose = self._get_ef_pose('mat')
-        s = time.time()
 
         joint_pos, joint_vel = self._panda.getJointStates()
         near, far = self.near, self.far
@@ -337,7 +334,7 @@ class PandaYCBEnv():
         mask[np.logical_or(mask == 2, mask > 3)] = 1
         mask[mask == 3] = 2
 
-        if False:
+        if vis:
             fig = plt.figure(figsize=(16.4, 4.8))
             ax = fig.add_subplot(1, 3, 1)
             plt.imshow((rgba[..., :3]  ).astype(np.uint8))
@@ -403,7 +400,7 @@ class PandaYCBEnv():
         if terminal:
             if self.target_lifted():
                 print('target {} grasp success!'.format(self.target_name))
-                reward = 1 #
+                reward = 1
             else:
                 print('target {} grasp failed !'.format(self.target_name))
         return reward
@@ -541,7 +538,7 @@ class PandaYCBEnv():
         new_points[:3] = se3_transform_pc(ef_pose, new_points[:3])
         if self._use_normal:
             new_points[-3:] = ef_pose[:3,:3].dot(new_points[-3:])
-        self.curr_acc_points = np.concatenate((new_points, self.curr_acc_points), axis=1) #
+        self.curr_acc_points = np.concatenate((new_points, self.curr_acc_points), axis=1)
 
 
     def reset_joint(self, init_joints):
@@ -828,7 +825,6 @@ class PandaYCBEnv():
             if self.placed_objects[idx] or idx >= len(self._objectUids) - 2:
                 if any_link_pair_collision(self._objectUids[idx], self._panda.pandaUid, CLIENT=self.cid) \
                                             and self._env_step < self._expert_step:
-                    # tolerance in the grasping stage.
                     self.obstacle_collided = True
                     self.collided = True
                     self.episode_done = True
@@ -959,7 +955,7 @@ class PandaYCBEnv():
 
         pos, orn = p.getLinkState(self._panda.pandaUid, self._panda.pandaEndEffectorIndex)[:2]
         ef_pose = list(pos) + [orn[3], orn[0], orn[1], orn[2]]
-        pos, orn = p.getBasePositionAndOrientation(self._objectUids[self.target_idx]) # to target
+        pos, orn = p.getBasePositionAndOrientation(self._objectUids[self.target_idx])
         obj_pose = list(pos) + [orn[3], orn[0], orn[1], orn[2]]
         cur_goal_mat = unpack_pose(obj_pose).dot(self.cur_goal)
         cur_goal = pack_pose(cur_goal_mat)
@@ -1004,7 +1000,7 @@ class PandaYCBEnv():
 
         pose = list(pos) + [orn[3], orn[0], orn[1], orn[2]]
         uid = self._objectUids[self.target_idx]
-        pos, orn = p.getBasePositionAndOrientation(uid) # to target
+        pos, orn = p.getBasePositionAndOrientation(uid)
         obj_pose = list(pos) + [orn[3], orn[0], orn[1], orn[2]]
         return inv_relative_pose(obj_pose, pose)
 

@@ -153,7 +153,7 @@ class Agent(object):
         self.timestep = timestep
 
         if  has_check(self, 'train_traj_sampler') and gt_traj is None and has_check(self, 'train_traj_feature'):
-            if  multi_sample: # multiple samples
+            if  multi_sample: # multiple traj samples
                 traj = self.select_traj(img_state,
                                     point_state.repeat((self.test_traj_num, 1, 1)),
                                     goal_state,
@@ -232,7 +232,7 @@ class Agent(object):
         self.perturb_flag_batch = self.perturb_flag_batch.bool()
 
         self.traj_expert_reward_mask = self.expert_reward_mask[self.cont_traj_inbatch_index]
-        self.train_traj_idx_batch = self.cont_traj_inbatch_index # if self.full_traj_sample else None
+        self.train_traj_idx_batch = self.cont_traj_inbatch_index
         self.sparsify_sim_traj_time_batch = self.sparsify_sim_traj_idx_batch[:, 1, None]
         self.sparsify_sim_cont_traj_inbatch_index = self.sparsify_sim_traj_idx_batch[:, 0].cuda().long()
         self.sparsify_sim_traj_expert_reward_mask = self.expert_reward_mask[self.sparsify_sim_cont_traj_inbatch_index]
@@ -405,18 +405,17 @@ class Agent(object):
         """
         Update network scheduler
         """
-
         if self.train_traj_sampler:
             self.traj_feature_sampler_sch.step()
         if self.train_traj_feature:
             self.traj_feature_extractor_sch.step()
 
         if hasattr(self, "critic"):
-            self.critic_scheduler.step()  # step
+            self.critic_scheduler.step()
         if hasattr(self, "policy"):
-            self.policy_scheduler.step()  # step
+            self.policy_scheduler.step()
         if self.train_feature or self.train_value_feature:
-            self.state_feature_extractor_scheduler.step()  # step
+            self.state_feature_extractor_scheduler.step()
             self.state_feat_encoder_scheduler.step()
         if self.train_value_feature and hasattr(self, 'state_feat_val_encoder_scheduler'):
             self.state_feat_val_encoder_scheduler.step()
@@ -548,10 +547,10 @@ class Agent(object):
 
         if os.path.exists(state_feat_path):
             net_dict = torch.load(state_feat_path)
-            if  has_check(self, 'reinit_feat_opt'): # hack for now
-                self.state_feature_extractor.load_state_dict(dict([(n, p) for n, p in net_dict["net"].items() if 'value' not in n ]),strict=False)    #
+            if  has_check(self, 'reinit_feat_opt'):
+                self.state_feature_extractor.load_state_dict(dict([(n, p) for n, p in net_dict["net"].items() if 'value' not in n ]),strict=False)
             else:
-                self.state_feature_extractor.load_state_dict(net_dict["net"] )    #
+                self.state_feature_extractor.load_state_dict(net_dict["net"] )
             self.state_feature_extractor_optim.load_state_dict(net_dict["opt"])
             self.state_feature_extractor_scheduler.load_state_dict( net_dict["sch"] )
             self.state_feat_encoder_optim.load_state_dict( net_dict["encoder_opt"] )

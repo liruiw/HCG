@@ -394,8 +394,6 @@ class BaseMemory(Dataset):
                                                                                         curr_traj_time[i],
                                                                                         batch_idx_offset + i )
 
-                prev_sim_states = sim_states.copy()
-                prev_sim_states[1:] = prev_sim_states[:-1] # shift by 1
                 data['sim_traj_point_state_batch'].append(sim_states)
                 data['sim_traj_joint_batch'].append(sim_joints)
                 data['sim_traj_action_batch'].append(sim_actions)
@@ -430,7 +428,7 @@ class BaseMemory(Dataset):
             sparsify_traj_idx = range(len(data[data_names[0]][-1]))
             sim_sparsify_traj_idx = range(len(data['sim_traj_point_state_batch'][-1]))
 
-        if self.sparsify_bc_ratio > 1 and traj_length > 2: #
+        if self.sparsify_bc_ratio > 1 and traj_length > 2:
             downsample_traj_len = int(np.ceil(float(traj_length) / self.sparsify_bc_ratio))
             valid_length = traj_length - 1
             sparsify_bc_idx = np.random.choice( np.arange(1, valid_length), downsample_traj_len,
@@ -454,7 +452,7 @@ class BaseMemory(Dataset):
 
     def post_process_batch(self, data, batch_idx):
         """
-        Set some data in batch
+        Augment batch data
         """
         end_idx = self.episode_map[batch_idx]
         increment_idx = np.minimum(end_idx, batch_idx + 1).astype(np.int)
@@ -485,7 +483,7 @@ class BaseMemory(Dataset):
 
     def compute_episode_map(self):
         """ compute episode length and end indexes """
-        nonzero_episode_map = self.episode_map[self.episode_map !=0]
+        nonzero_episode_map = self.episode_map[self.episode_map != 0]
         self.unique_episode_map, unique_indexes = np.unique(nonzero_episode_map, return_index=True)
         self.unique_episode_map = nonzero_episode_map[unique_indexes][1:-1]
         self.episode_length     = np.diff(nonzero_episode_map[unique_indexes])[:-1]
@@ -510,10 +508,11 @@ class BaseMemory(Dataset):
                             allow_pickle=True,
                             mmap_mode="r" )
             data_max_idx = min(np.amax(data["episode_map"]), buffer_size)
-            if data_max_idx == buffer_size: #
+            if data_max_idx == buffer_size:
                 unique_episode_idx = np.unique(data["episode_map"])
                 data_max_idx = unique_episode_idx[unique_episode_idx < data_max_idx][-1]
             print('data max: {} buffer size: {}'.format(data_max_idx, buffer_size))
+
             for name in self.attr_names + [ "episode_map",  "target_idx" ]:
                 s = time.time()
                 print("loading {} ...".format(name))

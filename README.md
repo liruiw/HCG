@@ -1,7 +1,7 @@
 # Hierarchical Policies for Cluttered-Scene Grasping with Latent Plans
 
 
-[[Website](https://sites.google.com/view/latent-grasping), [Paper](https://openreview.net/forum?id=DNcUeElhSPP)]
+[[Website](https://sites.google.com/view/latent-grasping)]
 
 ![image](assets/hcg.gif)
 
@@ -105,14 +105,11 @@ Example 1      |  Example 2
 ### Citation
 If you find HCG useful in your research, please consider citing:
 ```
-@inproceedings{
-anonymous2021hierarchical,
-title={Hierarchical Policies for Cluttered-Scene Grasping with Latent Plans},
-author={Anonymous},
-booktitle={Submitted to 5th Annual Conference on Robot Learning },
-year={2021},
-url={https://openreview.net/forum?id=DNcUeElhSPP},
-note={under review}
+@inproceedings{wang2021hierarchical,
+	author    = {Lirui Wang, Yu Xiang, Dieter Fox},
+	title     = {Hierarchical Policies for Cluttered-Scene Grasping with Latent Plans},
+	booktitle = {arXiv:2107.01518},
+	year      = {2021}
 }
 ```
 

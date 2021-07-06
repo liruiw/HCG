@@ -133,7 +133,8 @@ class DDPG(TrajAgent):
         """
         self.critic_optim.zero_grad()
         self.state_feat_val_encoder_optim.zero_grad()
-        critic_loss = sum([getattr(self, name) for name in get_loss_info_dict().keys() if name.endswith('loss') and name.startswith('critic')])
+        critic_loss = sum([getattr(self, name) for name in get_loss_info_dict().keys() \
+                            if name.endswith('loss') and name.startswith('critic')])
         if self.sa_channel_concat or not self.shared_feature:
             critic_loss.backward()
         else:
@@ -152,7 +153,7 @@ class DDPG(TrajAgent):
                            F.mse_loss(self.qf2.view(-1), self.next_q_value)
 
         if self.critic_aux:
-            self.critic_grasp_aux_loss +=   goal_pred_loss(self.critic_grasp_aux[self.goal_reward_mask, :7], self.goal_batch[self.goal_reward_mask])
+            self.critic_grasp_aux_loss += goal_pred_loss(self.critic_grasp_aux[self.goal_reward_mask, :7], self.goal_batch[self.goal_reward_mask])
 
     def update_parameters(self, batch_data, updates, k, test=False):
         """ update agent parameters """

@@ -25,6 +25,9 @@ class PointTrajLatentNet(nn.Module):
         group_norm=True,
         **kwargs
     ):
+        """
+        pointnet++ backbone network
+        """
         super(PointTrajLatentNet, self).__init__()
         self.input_dim = 3 + extra_latent
         self.model_scale = model_scale
@@ -77,7 +80,9 @@ class PointNetFeature(nn.Module):
         feature_option=0,
         group_norm=True,
         **kwargs ):
-
+        """
+        poinet++ feature network
+        """
         super(PointNetFeature, self).__init__()
         self.input_dim = 3 + extra_latent
         input_dim = (3 + policy_extra_latent if policy_extra_latent > 0 else self.input_dim )
@@ -133,8 +138,10 @@ class STPointNetFeature(nn.Module):
         extra_latent=0,
         feature_option=1,
         group_norm=True,
-        **kwargs
-    ):
+        **kwargs ):
+        """
+        spatiotemporal point network
+        """
         super(STPointNetFeature, self).__init__()
         self.base_dim = 4 + extra_latent
         self.encoder, self.output_dim = create_encoder(
@@ -189,16 +196,18 @@ class TrajSamplerNet(nn.Module):
         extra_pred_dim=0,
         config=None,
         input_dim=3,
-        **kwargs
-        ):
+        **kwargs ):
+        """
+        latent plan sampler network
+        """
         super(TrajSamplerNet, self).__init__()
         self.config = config
         self.setup_latent_sampler(**kwargs)
 
     def setup_latent_sampler(self, **kwargs):
         config = self.config
-        self.curr_state_encoder = eval(config.traj_vae_feature_extractor_class)(**kwargs)
         input_dim = config.traj_latent_size
+        self.curr_state_encoder = eval(config.traj_vae_feature_extractor_class)(**kwargs)
         self.sampler_bottleneck = create_bottleneck(config.policy_traj_latent_size, config.normal_vae_dim)
         self.cvae_encoder = get_fc_feat_head(input_dim + config.policy_traj_latent_size, [1024, 512, 512, 256, 256, 128], config.policy_traj_latent_size)
         self.cvae_decoder = get_fc_feat_head(input_dim + config.normal_vae_dim, [1024, 512, 512, 256, 256, 128], config.policy_traj_latent_size)
@@ -235,6 +244,9 @@ class TrajSamplerNet(nn.Module):
         return sample, sampler_mu, sampler_logsigma
 
     def conditional_sampler_vae_head(self, traj_feat, traj_inbatch_index=None, conditional_latent=None):
+        """
+        conditional vae forward pass
+        """
         sampler_mu, sampler_logsigma = None, None
         if conditional_latent is not None:
             encoded_latent = self.cvae_encoder(torch.cat((traj_feat[traj_inbatch_index][:len(conditional_latent)], conditional_latent), dim=-1))
@@ -259,6 +271,9 @@ class TrajEmbeddingNet(nn.Module):
         input_dim=3,
         **kwargs
         ):
+        """
+        latent plan embedding network
+        """
         super(TrajEmbeddingNet, self).__init__()
         config.num_inputs = num_inputs
         config.action_dim = num_actions
@@ -290,7 +305,9 @@ class TrajEmbeddingNet(nn.Module):
 
 
     def head(self, feat, traj_inbatch_index, val=False):
-
+        """
+        summarize local and global point features
+        """
         feat_embedding = self.fc_embedding(feat)
         traj_feat = []
         for idx in torch.unique(traj_inbatch_index):

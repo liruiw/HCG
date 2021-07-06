@@ -22,6 +22,7 @@ def create_encoder(
     local_pc_dim_list  = [32, 128, 512]
     output_dim = int(global_pc_dim_list[-1] + model_scale * 512)
 
+    # select different pointnet architecture
     if  feature_option == 0:
         model = base_network(pointnet_radius, pointnet_nclusters, model_scale, input_dim)
     elif feature_option == 2:
