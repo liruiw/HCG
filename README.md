@@ -1,7 +1,7 @@
 # Hierarchical Policies for Cluttered-Scene Grasping with Latent Plans
 
 
-[[Website](https://sites.google.com/view/latent-grasping)]
+[[Website](https://sites.google.com/view/latent-grasping), [Paper](https://arxiv.org/abs/2107.01518)]
 
 ![image](assets/hcg.gif)
 
@@ -61,7 +61,7 @@ Example 1      |  Example 2
 
 ### Note
 0. Checkout ```core/test_realworld_ros_clutter.py``` for an example of real-world usages.
-1. Related Works ([OMG](https://github.com/liruiw/OMG-Planner), [ACRONYM](https://github.com/NVlabs/acronym), [GA-DDPG](https://github.com/liruiw/GA-DDPG). [Unseen-Clustering](https://github.com/NVlabs/UnseenObjectClustering)).
+1. Related Works ([OMG](https://github.com/liruiw/OMG-Planner), [GA-DDPG](https://github.com/liruiw/GA-DDPG), [ACRONYM](https://github.com/NVlabs/acronym), [Unseen-Clustering](https://github.com/NVlabs/UnseenObjectClustering)).
 2. To use the full Acronym dataset with Shapenet meshes, please follow [ACRONYM](https://github.com/NVlabs/acronym#using-the-full-acronym-dataset) to download the meshes and grasps and follow [OMG-Planner](https://github.com/liruiw/OMG-Planner#process-new-shapes) to process and save in ```/data```. ```filter_shapenet.json``` can then be used for training.
 3. Please use Github issue tracker to report bugs. For other questions please contact [Lirui Wang](mailto:wangliruisz@gmail.com).
 
@@ -69,7 +69,7 @@ Example 1      |  Example 2
 ```angular2html
 ├── ...
 ├── HCG
-|   |── data  # training data from ACRONYM dataset
+|   |── data  # training data
 |   |   |── grasps      # grasps of the objects
 |   |   |── objects     # object meshes, sdf, urdf, etc
 |   |   |── robots      # robot meshes, urdf, etc
