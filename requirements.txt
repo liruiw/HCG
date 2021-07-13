@@ -14,10 +14,9 @@ opencv-python==3.4.3.18
 IPython
 matplotlib
 easydict
-pyyaml 
+pyyaml
 cmake
 future
 transforms3d
-tensorboardX
 scipy
 IPython
