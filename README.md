@@ -106,10 +106,10 @@ Example 1      |  Example 2
 If you find HCG useful in your research, please consider citing:
 ```
 @inproceedings{wang2021hierarchical,
-	author    = {Lirui Wang, Yu Xiang, Dieter Fox},
-	title     = {Hierarchical Policies for Cluttered-Scene Grasping with Latent Plans},
-	booktitle = {arXiv:2107.01518},
-	year      = {2021}
+author    = {Lirui Wang, Xiangyun Meng, Yu Xiang, and Dieter Fox},
+title     = {Hierarchical Policies for Cluttered-Scene Grasping with Latent Plans},
+booktitle = {IEEE Robotics and Automation Letters (RAL)},
+year      = {2022}
 }
 ```
 
